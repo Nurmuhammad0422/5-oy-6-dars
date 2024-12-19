@@ -1,0 +1,7 @@
+.login-bg{
+    height: 100vh;
+    background-image: url("../images/logo.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
