@@ -51,7 +51,7 @@
                         <img src="./images/search-icon.svg" alt="Search img" width="24" height="24">
                     </div>
                 </label>
-                <button class="login-btn w-[222px] bg-[#009398] text-white font-normal text-[20px] text-center rounded-[39px] pt-[21px] pb-[20px] pl-[14px] pr-[13px]" type="submit">+ Добавить продукт</button>
+                <button onclick="handleAddBtnClick()" class="login-btn w-[222px] bg-[#009398] text-white font-normal text-[20px] text-center rounded-[39px] pt-[21px] pb-[20px] pl-[14px] pr-[13px]" type="submit">+ Добавить продукт</button>
             </div>
             <ul class="flex items-center justify-center gap-[36px] mt-[40px] mb-[66px]">
                 <li class="category-1 text-[35px] text-[#009398] leading-[40.64px] pb-[8px] cursor-pointer font-bold border-b-[3px] border-[#009398]">Каркасные</li>
@@ -71,7 +71,7 @@
                                 <th class="py-[17px] text-start text-[20px] font-normal">Действия</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="product-table">
                             <tr>
                                 <td class="py-[7px]">
                                     <img class="mx-auto" src="./images/pool1.png" alt="Pool img" width="97" height="55">
@@ -95,9 +95,9 @@
             </div>
         </div>
     </div>
-    <!-- <div id="wrapper" class="modal-wrapper fixed inset-0 bg-[#00000069] backdrop-blur flex items-center justify-center">
-        <div class="modal-inner w-[1000px] duration-300 py-[40px] bg-white rounded-[25px] absolute"></div>
-    </div> -->
+    <div id="wrapper" class="modal-wrapper fixed inset-0 bg-[#00000069] backdrop-blur flex items-center justify-center">
+        <div class="modal-inner w-[1000px] duration-300 py-[40px] bg-white rounded-[25px] absolute flex flex-col items-center"><span class="text-[25px]">Assalomu Alaykum Ustoz proyekt yaxshi chiqqan digan umiddaman !!</span></div>
+    </div>
     <script src="./js/product.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
