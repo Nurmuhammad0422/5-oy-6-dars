@@ -131,14 +131,96 @@ function renderProducts(arr, list){
                 <td class="py-[7px]">${item.frame}</td>
                 <td class="py-[7px]">${item.size}</td>
                 <td class="py-[7px]">${item.depth}</td>
-                <td class="flex py-[10px] gap-[30px]">
-                    <img src="./images/edit-img.svg" alt="Edit img" width="16.5" height="16.5">
-                    <img src="./images/delete-img.svg" alt="Delete img" width="16" height="16">
+                <td class="py-[20px]">
+                    <div class="flex items-center gap-[18px]">
+                        <button onclick="handleEditProduct(${item.id})">
+                            <img src="./images/edit-img.svg" alt="Edit img" width="16.5" height="16.5">
+                        </button>
+                        <button onclick="handleDeleteProduct(${item.id})">
+                            <img src="./images/delete-img.svg" alt="Delete img" width="16" height="16">
+                        </button>
+                    </div>
                 </td>
             </tr>
         `
         elProductTable.append(elTR)
     });
 }
-renderProducts(productsList, elProductTable)
+renderProducts(productsList, elProductTable, "0")
 // Render Products end
+
+// delete part start
+function handleDeleteProduct(id){
+    const deleteIndex = productsList.findIndex(item => item.id == id)
+    productsList.splice(deleteIndex, 1)
+    renderProducts(productsList, elProductTable)
+    console.log(deleteIndex);
+    
+    localStorage.setItem("products", JSON.stringify(productsList))
+}
+// delete part end
+
+// Edit part start
+function handleEditProduct(id){
+    elModalWrapper.classList.remove("scale-0")
+    let EditProduct = productsList.find(item =>item.id == id)
+    elModalInner.innerHTML = `
+        <form class="add-form w-[915px] rounded-[15px] flex flex-col items-center mx-auto bg-white">
+            <label class="inline-block w-full mt-[5px] mb-[20px]">
+                <input class="add-choose-img hidden" type="file"/>
+                <img class="error-img mx-auto add_img" src="${EditProduct.imgUrl}" alt="Choose img" width="591" height="216"/>
+            </label>
+            <div class="flex justify-between">
+                <div class="w-[49%] space-y-[20px]">
+                    <label>
+                        <span class="text-[18px] text-[#898989] pl-2 ml-[22px] mb-1">Категории</span>
+                        <select name="category_id" class="w-[400px] ml-[25px] border-b-[1px] py-[8px] border-b-[1px] mb-[10px] border-black">
+                            <option ${EditProduct.categoryId == "0" && "selected"} value="0">Каркасные</option>
+                            <option ${EditProduct.categoryId == "1" && "selected"} value="1">Надувные</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span class="text-[18px] text-black pl-2 ml-[22px] mb-1">Стартая цена (сум)</span>
+                        <input value=${EditProduct.oldPrice} name="old_price" class="w-[400px] py-[15px] ml-[25px] text-[18px] border-b-[1px] mb-[10px] border-black" placeholder="Стартая цена" />
+                    </label>
+                    <label>
+                        <span class="text-[18px] text-black pl-2 ml-[22px] mb-1">Рамка</span>
+                        <input value=${EditProduct.frame} name="frame" class="w-[400px] py-[15px] ml-[25px] text-[18px] border-b-[1px] mb-[10px] border-black" placeholder="Рамка" />
+                    </label>
+                    <label>
+                        <span class="text-[18px] text-black pl-2 ml-[22px] mb-1">Размер (м)</span>
+                        <input value=${EditProduct.size} name="size" class="w-[400px] py-[15px] ml-[25px] text-[18px] border-b-[1px] mb-[10px] border-black" placeholder="Размер (м)" />
+                    </label>
+                </div>
+                <div class="w-[49%] space-y-[20px]">
+                    <label>
+                        <span class="text-[18px] text-black pl-2 ml-[22px] mb-1">Количество</span>
+                        <input value=${EditProduct.amount} name="amount" class="w-[400px] py-[15px] ml-[25px] text-[18px] border-b-[1px] mb-[10px] border-black" placeholder="Количество"/>
+                    </label>
+                    <label>
+                        <span class="text-[18px] text-black pl-2 ml-[22px] mb-1">Цена со скидкой (сум)</span>
+                        <input value=${EditProduct.discountPrice} name="discont_price" class="w-[400px] py-[15px] ml-[25px] text-[18px] border-b-[1px] mb-[10px] border-black" placeholder="Цена со скидкой (сум)"/>
+                    </label>
+                    <label>
+                        <span class="text-[18px] text-black pl-2 ml-[22px] mb-1">Глубина(см)</span>
+                        <input value=${EditProduct.depth} name="depth" class="w-[400px] py-[15px] text-[18px] ml-[25px] border-b-[1px] py-[8px] border-b-[1px] mb-[10px] border-black" placeholder="Глубина(см)"/>
+                    </label>
+                    <label>
+                        <span class="text-[18px] text-[#898989] pl-2 ml-[22px] mb-1">Статус</span>
+                        <select name="status" class="w-[400px] ml-[25px] border-b-[1px] py-[8px] border-b-[1px] mb-[10px] border-black">
+                            <option ${EditProduct.status == "0" && "selected"} value="0">Рекомендуем</option>
+                            <option ${EditProduct.status == "1" && "selected"} value="1">Cкидка</option> 
+                            <option ${EditProduct.status == "2" && "selected"} value="1">Нет в наличии</option> 
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <button class="add-form w-[237px] h-[47px] bg-[#009398] mt-[5px] mb-[5px] text-white font-normal text-[20px] text-center rounded-[39px]" type="submit">Добавить</button>
+        </form>
+    `
+    let elErrorImg = document.querySelector(".error-img")
+    elErrorImg.addEventListener("error", function(e){
+        e.target.src = ".images/empty-img.png"
+    })
+}
+// Edit part end
